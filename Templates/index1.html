@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bankruptcy Prediction</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Open+Sans&family=Poppins:wght@600&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+        .container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 600px;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            color: #ff7e5f;
+            margin-bottom: 10px;
+        }
+        .sub-heading {
+            color: #feb47b;
+            margin-bottom: 20px;
+        }
+        .field {
+            margin-bottom: 20px;
+        }
+        .field label {
+            display: block;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            flex: 1;
+            padding: 5px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .buttons button:hover {
+            background-color: #007bff;
+        }
+        .buttons button.low {
+            background-color: #28a745;
+        }
+        .buttons button.medium {
+            background-color: #ffc107;
+        }
+        .buttons button.high {
+            background-color: #dc3545;
+        }
+        #submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        #submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bankruptcy Prediction</h1>
+        <p class="sub-heading">Model predicts probability that a business goes bankrupt from specified features.</p>
+        <form id="prediction-form" action="/predict" method="post">
+            <div class="field">
+                <label for="industrial_risk">Industrial Risk:</label>
+                <div class="buttons" id="industrial_risk">
+                    <button type="button" class="low" value="0" onclick="setInputValue('industrial_risk', 0)">Low</button>
+                    <button type="button" class="medium" value="0.5" onclick="setInputValue('industrial_risk', 0.5)">Medium</button>
+                    <button type="button" class="high" value="1" onclick="setInputValue('industrial_risk', 1)">High</button>
+                </div>
+            </div>
+            <div class="field">
+                <label for="management_risk">Management Risk:</label>
+                <div class="buttons" id="management_risk">
+                    <button type="button" class="low" value="0" onclick="setInputValue('management_risk', 0)">Low</button>
+                    <button type="button" class="medium" value="0.5" onclick="setInputValue('management_risk', 0.5)">Medium</button>
+                    <button type="button" class="high" value="1" onclick="setInputValue('management_risk', 1)">High</button>
+                </div>
+            </div>
+            <div class="field">
+                <label for="financial_flexibility">Financial Flexibility:</label>
+                <div class="buttons" id="financial_flexibility">
+                    <button type="button" class="low" value="0" onclick="setInputValue('financial_flexibility', 0)">Low</button>
+                    <button type="button" class="medium" value="0.5" onclick="setInputValue('financial_flexibility', 0.5)">Medium</button>
+                    <button type="button" class="high" value="1" onclick="setInputValue('financial_flexibility', 1)">High</button>
+                </div>
+            </div>
+            <div class="field">
+                <label for="credibility">Credibility:</label>
+                <div class="buttons" id="credibility">
+                    <button type="button" class="low" value="0" onclick="setInputValue('credibility', 0)">Low</button>
+                    <button type="button" class="medium" value="0.5" onclick="setInputValue('credibility', 0.5)">Medium</button>
+                    <button type="button" class="high" value="1" onclick="setInputValue('credibility', 1)">High</button>
+                </div>
+            </div>
+            <div class="field">
+                <label for="competitiveness">Competitiveness:</label>
+                <div class="buttons" id="competitiveness">
+                    <button type="button" class="low" value="0" onclick="setInputValue('competitiveness', 0)">Low</button>
+                    <button type="button" class="medium" value="0.5" onclick="setInputValue('competitiveness', 0.5)">Medium</button>
+                    <button type="button" class="high" value="1" onclick="setInputValue('competitiveness', 1)">High</button>
+                </div>
+            </div>
+            <div class="field">
+                <label for="operating_risk">Operating Risk:</label>
+                <div class="buttons" id="operating_risk">
+                    <button type="button" class="low" value="0" onclick="setInputValue('operating_risk', 0)">Low</button>
+                    <button type="button" class="medium" value="0.5" onclick="setInputValue('operating_risk', 0.5)">Medium</button>
+                    <button type="button" class="high" value="1" onclick="setInputValue('operating_risk', 1)">High</button>
+                </div>
+            </div>
+            <input type="hidden" name="industrial_risk" id="input-industrial_risk">
+            <input type="hidden" name="management_risk" id="input-management_risk">
+            <input type="hidden" name="financial_flexibility" id="input-financial_flexibility">
+            <input type="hidden" name="credibility" id="input-credibility">
+            <input type="hidden" name="competitiveness" id="input-competitiveness">
+            <input type="hidden" name="operating_risk" id="input-operating_risk">
+            <button type="submit" id="submit-button">Predict</button>
+        </form>
+    </div>
+
+    <script>
+        function setInputValue(name, value) {
+            document.getElementById('input-' + name).value = value;
+            const buttons = document.getElementById(name).querySelectorAll('button');
+            buttons.forEach(btn => btn.style.backgroundColor = '');
+            event.target.style.backgroundColor = 'lightblue';
+        }
+    </script>
+</body>
+</html>
